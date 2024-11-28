@@ -1,16 +1,27 @@
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
+require('dotenv').config();
 
-const uri = 'mongodb+srv://Tunde1:Tunde1@cluster0.qhu9y.mongodb.net/housify?retryWrites=true&w=majority';
+if (!process.env.MONGO_URL) {
+    console.error('MONGO_URL environment variable is not set');
+    process.exit(1);
+}
+
+if (!process.env.ADMIN_PASSWORD) {
+    console.error('ADMIN_PASSWORD environment variable is not set');
+    process.exit(1);
+}
+
+const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri);
 
 async function createAdmin() {
     try {
         await client.connect();
-        console.log('Connected to MongoDB');
+        console.log('Connected to database');
 
-        const db = client.db('housify');
-        const admins = db.collection('admins');
+        const db = client.db(process.env.DB_NAME);
+        const admins = db.collection(process.env.ADMIN_COLLECTION);
 
         // Check if admin exists
         const existingAdmin = await admins.findOne({ email: 'admin@housify.com' });
@@ -21,7 +32,7 @@ async function createAdmin() {
 
         // Hash password
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash('admin123456', salt);
+        const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, salt);
 
         // Create admin
         const result = await admins.insertOne({
@@ -39,7 +50,7 @@ async function createAdmin() {
         console.error('Error:', error);
     } finally {
         await client.close();
-        console.log('Disconnected from MongoDB');
+        console.log('Disconnected from database');
     }
 }
 
