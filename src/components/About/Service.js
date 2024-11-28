@@ -1,51 +1,81 @@
 import React from "react";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import GroupIcon from "@mui/icons-material/Group";
+import { 
+  FaSearchLocation, 
+  FaShieldAlt, 
+  FaHandshake, 
+  FaChartLine,
+  FaMobileAlt,
+  FaClock
+} from "react-icons/fa";
 
 const Service = (props) => {
-  // TODO: use the right icons for each service.
+  const services = [
+    {
+      icon: <FaSearchLocation />,
+      title: "Nationwide Coverage",
+      description: "Access properties across all major cities and regions in Nigeria, with detailed neighborhood insights and market analysis."
+    },
+    {
+      icon: <FaShieldAlt />,
+      title: "Verified Listings",
+      description: "Every property undergoes our rigorous verification process to ensure authenticity and prevent fraud."
+    },
+    {
+      icon: <FaHandshake />,
+      title: "Professional Network",
+      description: "Work with vetted real estate professionals, from agents to property managers, all certified by Housify."
+    },
+    {
+      icon: <FaChartLine />,
+      title: "Market Intelligence",
+      description: "Make informed decisions with our real-time market data, pricing trends, and property valuations."
+    },
+    {
+      icon: <FaMobileAlt />,
+      title: "Digital Solutions",
+      description: "Manage your entire property journey from your device - virtual tours, online documentation, and digital payments."
+    },
+    {
+      icon: <FaClock />,
+      title: "End-to-End Support",
+      description: "From property search to final documentation, our team supports you at every step of your real estate journey."
+    }
+  ];
 
   return (
-    <div>
-      <div className="max-w-[1440px] ml-16 mx-auto py-10  flex-col justify-between text-center md:flex-row relative">
-        {/* property-card-container */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-10 py-10">
-          <div>
-            {/* section label */}
-            <div className="p-6 md:text-left md:mt-[8s%]">
-              <h3 className="text-purple-700 "> {props.label} </h3>
-              <h2 className="md:max-w-[70%]font-bold mt-6 text-4xl">{props.header}</h2>
-              <p className="text-2xl font-extralight mt-4"> {props.text} </p>
-            </div>
-          </div>
-          <div className="md:ml-8 grid grid-cols-2 gap-4 md:gap-x-8 text-left mr-16">
-            <div className="p-4 md:p-8 rounded-[25px] rounded-tr-none bg-zinc-800 hover:border hover:border-zinc-300 duration-500">
-              <ApartmentIcon className="bigIcon"></ApartmentIcon>
-              <h4>Buy Property</h4>
-              <p>With our vast search tool, you can find your dream home from anywhere in the world.</p>
-            </div>
-
-            <div className="p-4 md:p-8  rounded-[25px] rounded-tr-none bg-zinc-800 hover:border hover:border-zinc-300 duration-500">
-              <ApartmentIcon className="bigIcon"></ApartmentIcon>
-              <h4>Sell Property</h4>
-              <p>With our vast search tool, you can find your dream home from anywhere in the world.</p>
-            </div>
-
-            <div className="p-4 md:p-8  rounded-[25px] rounded-tr-none bg-zinc-800 hover:border hover:border-zinc-300 duration-500">
-              <ApartmentIcon className="bigIcon"></ApartmentIcon>
-              <h4>Rent Property</h4>
-              <p>With our vast search tool, you can find your dream home from anywhere in the world.</p>
-            </div>
-
-            <div className="p-4 md:p-8  rounded-[25px] rounded-tr-none bg-zinc-800 hover:border hover:border-zinc-300 duration-500">
-              <GroupIcon className="bigIcon"></GroupIcon>
-              <h4>Property Agent</h4>
-              <p>With our vast search tool, you can find your dream home from anywhere in the world.</p>
-            </div>
-          </div>
+    <div className="bg-zinc-900 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <h3 className="text-purple-600 text-lg font-medium mb-4">{props.label}</h3>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{props.header}</h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">{props.text}</p>
         </div>
-        <div className="w-full pt-4 pb-8 items-center md:absolute top-[67%] left-[-41%]">
-          <button className="mt-6">Learn More</button>
+
+        {/* Services Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <div 
+              key={index}
+              className="bg-zinc-800/50 p-8 rounded-xl hover:bg-zinc-800 transition-all duration-300"
+            >
+              <div className="bg-purple-600/10 w-14 h-14 rounded-lg flex items-center justify-center mb-6">
+                <span className="text-2xl text-purple-500">{service.icon}</span>
+              </div>
+              <h4 className="text-white text-xl font-semibold mb-4">{service.title}</h4>
+              <p className="text-gray-300 leading-relaxed">{service.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-16">
+          <button
+            onClick={() => window.location.href = '/property'}
+            className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300"
+          >
+            Explore Properties
+          </button>
         </div>
       </div>
     </div>

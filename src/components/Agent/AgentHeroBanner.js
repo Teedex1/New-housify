@@ -39,8 +39,8 @@ const AgentHeroBanner = (props) => {
                 </div>
 
                 <button className="mt-10 w-[200px]">
-                  <NavLink className="" to="/AgentForm">
-                    Edit Profile
+                  <NavLink className="" to="/agentDashboard">
+                    View Dashboard
                   </NavLink>
                 </button>
               </div>

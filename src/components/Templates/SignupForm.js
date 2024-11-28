@@ -1,73 +1,109 @@
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
-// <<<<<<< HEAD
-// import { useNavigate, Route, Routes } from "react-router-dom";
-// import LoginForm from "../Templates/LoginForm";
-// =======
-// import {useNavigate, Route, Routes} from "react-router-dom";
-// // import LoginForm from "/LoginForm";
-
-// const SignupForm = (props) => {
-//   // implementing state and hooks
-// >>>>>>> 9a244ddd0097aacc24f6f8f1d81864d1914287a2
-
 const SignupForm = () => {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    password: "",
+    username: "",
     email: "",
+    password: "",
     repeatPassword: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
-    if (event) {
-      event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setLoading(true);
 
-      alert(`Welcome ${inputs.email}!
-         `);
+    // Validate passwords match
+    if (inputs.password !== inputs.repeatPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
     }
-    setInputs({
-      password: "",
-      email: "",
-      repeatPassword: "",
-    });
+
+    try {
+      const response = await fetch("http://localhost:5001/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: inputs.username,
+          email: inputs.email,
+          password: inputs.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      // Store tokens
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data));
+
+      // Reset form
+      setInputs({
+        username: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
+      });
+
+      // Redirect to home page
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleInputChange = async (event) => {
-    event.persist();
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-
-    setInputs((prevInputs) => ({
-      ...prevInputs,
+    setInputs((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
-  // const navigate = useNavigate();
-
-  // const navigateToHome = () => {
-  //   navigate("LoginForm");
-  // };
 
   return (
     <div className="Property">
       <Header />
       <div className="w-full mx-auto p-10 text-center">
-        <h2 className="font-semibold">SignUp For The Best Experience?</h2>
+        <h2 className="font-semibold">Sign Up For The Best Experience</h2>
       </div>
-      <div className="py-20 px-10 text-center  bg-zinc-800 my-10">
-        {/* testing form */}
-        {/* <h4>
-          Hello {inputs.email} {inputs.password} {inputs.repeatPassword}
-        </h4> */}
-        {/* <Routes>
-          <Route path="LoginForm" element={<LoginForm />} />
-        </Routes> */}
-
+      <div className="py-20 px-10 text-center bg-zinc-800 my-10">
         <form onSubmit={handleSubmit}>
-          <div className="flex  text-left h-[350px] mb-10 justify-center align-middle text-xl ">
+          <div className="flex text-left h-[400px] mb-10 justify-center align-middle text-xl">
             <div className="w-[400px]">
-              <h2 className="font-thin  pb-4 text-5xl">Sign up</h2>
+              <h2 className="font-thin pb-4 text-5xl">Sign up</h2>
+
+              {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                  {error}
+                </div>
+              )}
+
+              <div>
+                <label>Username</label>
+                <input
+                  className="formInput"
+                  type="text"
+                  name="username"
+                  onChange={handleInputChange}
+                  value={inputs.username}
+                  placeholder="Enter username"
+                  required
+                />
+              </div>
 
               <div>
                 <label>Email Address</label>
@@ -87,55 +123,43 @@ const SignupForm = () => {
                 <input
                   className="formInput"
                   type="password"
-                  mx-auto
-                  py-20
-                  px-10
-                  justify-between
-                  text-center
                   name="password"
                   onChange={handleInputChange}
                   placeholder="Enter Password"
                   value={inputs.password}
+                  required
                 />
               </div>
 
               <div>
-                <label>Renter Password</label>
+                <label>Confirm Password</label>
                 <input
                   className="formInput"
                   type="password"
-                  mx-auto
-                  py-20
-                  px-10
-                  justify-between
-                  text-center
                   name="repeatPassword"
                   onChange={handleInputChange}
-                  placeholder="Renter Password"
+                  placeholder="Confirm Password"
                   value={inputs.repeatPassword}
+                  required
                 />
               </div>
-              <div className="mx-auto text-left text-xl">
-                {/* <button onClick={NavigateToLoginForm}>Submit</button> */}
-                {/* <button onClick={navigateToHome} cl></button> */}
-                <button>Submit</button>
+
+              <div className="mx-auto text-center text-xl">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                  {loading ? "Signing up..." : "Sign Up"}
+                </button>
               </div>
             </div>
           </div>
         </form>
       </div>
-
       <Footer />
     </div>
   );
 };
-
-// function LoginForm() {
-//   return (
-//     <>
-//       <LoginForm />
-//     </>
-//   );
-// }
 
 export default SignupForm;

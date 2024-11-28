@@ -5,80 +5,127 @@ import HeroImageBox from "../utils/HeroImageBox";
 import SearchButton from "../utils/SearchButton";
 import ExpertSection from "../utils/ExpertSection";
 import Works from "../utils/Works";
-import Service from "../About/Service";
 import Partners from "../utils/Partners";
-import useFetch from "../utils/useFetch";
 import FeaturedProperty from "../Property/FeaturedProperty";
+import { featuredProperties } from "../../data/featuredProperties";
+import { FaSearch, FaHandshake, FaHome } from "react-icons/fa";
 
 function Home() {
-
-  const {items} = useFetch()
-
   return (
     <div className="Home">
       <Header />
+      {/* Hero Section */}
       <section className="ml-16 mr-16">
-        <div className="max-w-[1440px] mx-auto py-5 px-10  md:flex justify-between">
+        <div className="max-w-[1440px] mx-auto py-5 px-10 md:flex justify-between">
           <div className="md:grid text-center md:text-left grid-cols-2 gap-10">
-            <div className="my-10  md:my-auto">
+            <div className="my-10 md:my-auto">
               <h1 className="pb-8 text-4xl md:text-6xl">Find Your Next Perfect Place To Live</h1>
               <p className="text-xl mb-10">Let's help you find a home that is perfect for you</p>
               <SearchButton />
             </div>
-
-            {/* HeroImageBox with dynamic image from items or fallback */}
-            {items && items[0] && <HeroImageBox p="Featured Homes" url={items[0]?.url || require("../../assets/h2.jpg")} />}
-            
-            {/* Static fallback image */}
-            {<HeroImageBox p="Featured Homes" url={require("../../assets/h2.jpg")} />}
+            <HeroImageBox p="Featured Homes" url={featuredProperties[0]?.url || require("../../assets/h2.jpg")} />
           </div>
         </div>
       </section>
 
-      <section className="bg-black  text-white flex">
-        <div className="max-w-[1440px] mx-auto py-5 px-10  md:flex justify-between">
-          <Service
-            label="About Us"
-            header="We Provide The Best Property For You"
-            text="With our vast search tool, you can find your dream home from any location in the world. All we do is help you find the place, meet the agents, and seal the deal. There's no extra commission for our service."
-          />
+      {/* Key Features Section */}
+      <section className="bg-black text-white py-16">
+        <div className="max-w-[1440px] mx-auto px-10">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-zinc-900/50 p-8 rounded-xl hover:bg-zinc-800/50 transition-all duration-300">
+              <div className="bg-purple-600/10 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                <FaSearch className="text-2xl text-purple-500" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Smart Search</h3>
+              <p className="text-gray-400">
+                Find your perfect property from our vast collection across Nigeria using our intelligent search tools.
+              </p>
+            </div>
+            
+            <div className="bg-zinc-900/50 p-8 rounded-xl hover:bg-zinc-800/50 transition-all duration-300">
+              <div className="bg-purple-600/10 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                <FaHandshake className="text-2xl text-purple-500" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Verified Agents</h3>
+              <p className="text-gray-400">
+                Connect with trusted real estate professionals who understand your needs and preferences.
+              </p>
+            </div>
+            
+            <div className="bg-zinc-900/50 p-8 rounded-xl hover:bg-zinc-800/50 transition-all duration-300">
+              <div className="bg-purple-600/10 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                <FaHome className="text-2xl text-purple-500" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Quality Listings</h3>
+              <p className="text-gray-400">
+                Access premium property listings with detailed information and high-quality images.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="bg-black text-white">
-      <FeaturedProperty header="Featured Properties" text="Check Out The top rated Properties around the World " items={items} />
-      </section>
-
-      <section className="bg-black  text-white">
-        <div className="text-center pt-20">
-          <h3 className="text-purple-700 text-2xl">How it Works</h3>
-          <p className="mb-12">Confidence in Collaboration</p>
-        </div>
-        <Works />
+        <FeaturedProperty 
+          header="Featured Properties" 
+          text="Check Out Our Top Rated Properties in Nigeria" 
+          items={featuredProperties}
+          showFilters={false}
+        />
       </section>
 
       <section className="bg-black text-white">
-        <div className="text-center pt-20">
-          <h3 className="text-purple-700 text-2xl">Meet an Agent</h3>
-          <p>Do you prefer to get advice from an Agent?</p>
-          <p>Now you meet them across the world.</p>
-        </div>
-        <ExpertSection />
+        <ExpertSection
+          header="Meet Our Expert Agents"
+          text="Our professional agents are here to help you find your perfect home"
+          showCTA={false}
+        />
       </section>
 
-      <section className="bg-black text-white">
-        <div className="text-center pt-14">
-          <h3 className="text-purple-700 text-2xl">Our Partners</h3>
-          <p className="mb-12">We have strong partnership with renowned agencies and organizations.</p>
+      <section className="bg-black text-white pt-20">
+        <div className="max-w-[1440px] mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
+            <p className="text-xl text-gray-400">Your Journey to Home Ownership Made Simple</p>
+          </div>
+          <Works />
+        </div>
+      </section>
+
+      <section className="bg-black text-white py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Partners</h2>
+          <p className="text-xl text-gray-400">Trusted by Nigeria's leading real estate professionals</p>
         </div>
         <Partners />
       </section>
 
-      <section className="bg-black  text-center pt-16">
-        <h3 className="text-purple-700 text-2xl ">Have a Question?</h3>
-        <p className="mb-20 text-white">Let us help you.</p>
-        <Footer />
+      <section className="bg-zinc-900/50 text-white py-20">
+        <div className="max-w-[1440px] mx-auto px-6">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Need Help?</h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+              Our support team is here to assist you with any questions about finding your perfect home.
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => window.location.href = '/support/help'}
+                className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              >
+                Get Help
+              </button>
+              <button
+                onClick={() => window.location.href = '/contact'}
+                className="px-8 py-3 border border-purple-600 text-purple-500 rounded-lg hover:bg-purple-600 hover:text-white transition-colors duration-300"
+              >
+                Contact Us
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

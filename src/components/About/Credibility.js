@@ -1,74 +1,94 @@
-import React, { useState } from "react";
-import { VscWorkspaceTrusted } from "react-icons/vsc";
-import { FaToolbox } from "react-icons/fa";
-import { GrUserExpert } from "react-icons/gr";
-import { FaClock } from "react-icons/fa";
+import React from "react";
+import { 
+  FaShieldAlt, 
+  FaUserCheck, 
+  FaChartLine, 
+  FaClock,
+  FaMoneyBillWave,
+  FaHeadset
+} from "react-icons/fa";
+
 const Credibility = (props) => {
+  const features = [
+    {
+      icon: <FaShieldAlt />,
+      title: "Verified Properties",
+      description: "Every listing is verified by our team to ensure authenticity and prevent fraud."
+    },
+    {
+      icon: <FaUserCheck />,
+      title: "Certified Agents",
+      description: "Work with thoroughly vetted and licensed real estate professionals."
+    },
+    {
+      icon: <FaMoneyBillWave />,
+      title: "Transparent Pricing",
+      description: "Clear pricing on all properties with no hidden fees or surprise charges."
+    },
+    {
+      icon: <FaChartLine />,
+      title: "Market Insights",
+      description: "Access real-time market data and trends to make informed decisions."
+    },
+    {
+      icon: <FaClock />,
+      title: "Fast Response",
+      description: "Quick response times from agents and our support team."
+    },
+    {
+      icon: <FaHeadset />,
+      title: "24/7 Support",
+      description: "Round-the-clock assistance for all your real estate needs."
+    }
+  ];
+
   return (
-    <div className="Credibility w-full max-w-[1440px] my-20 ">
-      {/* section label */}
-      <div className="pb-6 text-center">
-        <h3 className="text-purple-700"> {props.header} </h3>
-        <h5 className="pt-4"> {props.text} </h5>
+    <div className="max-w-[1440px] mx-auto py-20 px-6">
+      {/* Section Header */}
+      <div className="text-center mb-16">
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">{props.header}</h2>
+        <p className="text-xl text-gray-400">{props.text}</p>
       </div>
 
-      <div className="flex flex-col justify-center  px-10 md:px-16 sm:grid sm:grid-cols-2  lg:grid-cols-4 gap-10">
-        <div className="text-center">
-          <div className="bg-zinc-800 rounded-[50px] rounded-tr-none hover:border border-zinc-400 duration-500 text-center px-8 py-10 inline-block w-[280px] ">
-            <div className="flex text-[50px] mb-2 justify-center">
-              <p>
-                <VscWorkspaceTrusted />
-              </p>
-            </div>
-            <h5 className=" text-purple-500 text-[20px] ">
-              Transparent Pricing
-            </h5>
-            <p className="text-[18px]">
-              See firxed prices before you book. No hidden charges.
-            </p>
-          </div>
-        </div>
-
-        <div className="text-center">
-          <div className="bg-zinc-800 rounded-[50px] rounded-tr-none hover:border border-zinc-400 duration-500 text-center px-8 py-10 inline-block w-[280px]">
-            <div className="flex text-[50px] mb-2 justify-center">
-              <div className="bg-zinc-300 p-2 rounded-full text-[33px]">
-                <GrUserExpert />
+      {/* Features Grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {features.map((feature, index) => (
+          <div 
+            key={index} 
+            className="bg-zinc-800/50 rounded-xl p-8 hover:bg-zinc-800 transition-all duration-300"
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-purple-600/10 rounded-xl flex items-center justify-center mb-6">
+                <span className="text-3xl text-purple-500">{feature.icon}</span>
               </div>
-            </div>
-            <h5 className=" text-purple-500 text-[20px] ">Experts Only</h5>
-            <p className="text-[18px]">
-              Our professionals are well trained and have on-job expertise.
-            </p>
-          </div>
-        </div>
-
-        <div className="text-center">
-          <div className="bg-zinc-800 rounded-[50px] rounded-tr-none hover:border border-zinc-400 duration-500 text-center px-8 py-10 inline-block w-[280px]">
-            <div className="flex text-[50px] mb-2 justify-center">
-              <p>
-                <FaToolbox />
+              <h3 className="text-xl font-semibold text-white mb-3">
+                {feature.title}
+              </h3>
+              <p className="text-gray-400">
+                {feature.description}
               </p>
             </div>
-            <h5 className=" text-purple-500 text-[20px] ">Fully Equiped</h5>
-            <p className="text-[18px]">
-              We bring everything needed to get the job done well.
-            </p>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <div className="text-center">
-          <div className="bg-zinc-800 rounded-[50px] rounded-tr-none hover:border border-zinc-400 duration-500 text-center px-8 py-10 inline-block w-[280px]">
-            <div className="flex text-[50px] mb-2 justify-center">
-              <p>
-                <FaClock />
-              </p>
-            </div>
-            <h5 className=" text-purple-500 text-[20px] ">Timely Delivery</h5>
-            <p className="text-[18px]">
-              We create and deliver opportunities within time and budget.
-            </p>
-          </div>
+      {/* Trust Indicators */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 text-center">
+        <div className="p-6">
+          <h4 className="text-3xl font-bold text-purple-500 mb-2">50K+</h4>
+          <p className="text-gray-400">Happy Users</p>
+        </div>
+        <div className="p-6">
+          <h4 className="text-3xl font-bold text-purple-500 mb-2">10K+</h4>
+          <p className="text-gray-400">Properties Listed</p>
+        </div>
+        <div className="p-6">
+          <h4 className="text-3xl font-bold text-purple-500 mb-2">1K+</h4>
+          <p className="text-gray-400">Verified Agents</p>
+        </div>
+        <div className="p-6">
+          <h4 className="text-3xl font-bold text-purple-500 mb-2">5K+</h4>
+          <p className="text-gray-400">Successful Deals</p>
         </div>
       </div>
     </div>
