@@ -45,18 +45,16 @@ const auth = async (req, res, next) => {
         let user = await Admin.findById(decoded.id);
         let role = 'admin';
         
-        console.log('[Auth] Checking admin:', decoded.id, user ? 'found' : 'not found');
-
         if (!user) {
             user = await Agent.findById(decoded.id);
             role = 'agent';
-            console.log('[Auth] Checking agent:', decoded.id, user ? 'found' : 'not found');
+            console.log('[Auth] Found agent:', user ? user._id : 'not found');
         }
 
         if (!user) {
             user = await User.findById(decoded.id);
             role = 'user';
-            console.log('[Auth] Checking user:', decoded.id, user ? 'found' : 'not found');
+            console.log('[Auth] Found user:', user ? user._id : 'not found');
         }
 
         if (!user) {

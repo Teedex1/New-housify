@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaChartBar, FaUsers, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminDashboardLayout = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { logout } = useAuth();
 
     const handleLogout = () => {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminData');
+        logout();
         navigate('/admin/login');
     };
 
@@ -54,29 +55,16 @@ const AdminDashboardLayout = ({ children }) => {
                     </Link>
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center px-4 py-3 hover:bg-purple-700 transition-colors text-left"
+                        className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-colors text-gray-300 hover:bg-zinc-800"
                     >
-                        <FaSignOutAlt className="mr-3" />
-                        Logout
+                        <FaSignOutAlt size={20} />
+                        <span>Logout</span>
                     </button>
                 </nav>
             </div>
-
             {/* Main Content */}
-            <div className="flex-1 overflow-auto">
-                <header className="bg-gray-800 shadow-lg">
-                    <div className="max-w-7xl mx-auto py-4 px-6">
-                        <h1 className="text-2xl font-bold text-gray-100">
-                            {location.pathname === '/admin/dashboard' && 'Dashboard'}
-                            {location.pathname === '/admin/agents' && 'Manage Agents'}
-                            {location.pathname === '/admin/analytics' && 'Analytics'}
-                            {location.pathname === '/admin/settings' && 'Settings'}
-                        </h1>
-                    </div>
-                </header>
-                <main className="max-w-7xl mx-auto py-6 px-6">
-                    {children}
-                </main>
+            <div className="flex-1 p-8">
+                {children}
             </div>
         </div>
     );

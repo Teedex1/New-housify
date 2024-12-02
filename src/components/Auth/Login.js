@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axiosInstance from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+import axiosInstance from '../../utils/axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,45 +20,13 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // First try admin login
-      try {
-        const adminResponse = await axiosInstance.post('/api/admin/login', formData);
-        console.log('Admin login response:', adminResponse.data);
-        console.log('Admin user role:', adminResponse.data.admin.role);
-        login(adminResponse.data.token, adminResponse.data.admin);
-        console.log('Auth state after login:', { 
-          token: localStorage.getItem('token'),
-          user: JSON.parse(localStorage.getItem('user'))
-        });
-        console.log('About to navigate to /admin');
-        navigate('/admin');
-        console.log('Navigation completed');
-        return;
-      } catch (error) {
-        // If not admin, continue to try agent login
-        if (error.response?.status !== 401) {
-          throw error;
-        }
-      }
-
-      // Try agent login
-      try {
-        const agentResponse = await axiosInstance.post('/api/agents/login', formData);
-        console.log('Agent login successful:', agentResponse.data);
-        login(agentResponse.data.token, agentResponse.data.agent);
-        console.log('About to navigate to /agent/dashboard');
-        navigate('/agent/dashboard');
-        console.log('Navigation completed');
-        return;
-      } catch (error) {
-        // If not agent, throw error
-        if (error.response?.status !== 401) {
-          throw error;
-        }
-        toast.error('Invalid email or password');
-      }
+      const response = await axiosInstance.post('/api/auth/login', formData);
+      login(response.data.token, response.data.user);
+      toast.success('Login successful!');
+      navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      console.error('Login error:', error);
+      toast.error(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -74,7 +42,7 @@ const Login = () => {
               Sign in to your account
             </h2>
             <p className="mt-2 text-center text-sm text-gray-400">
-              Access your dashboard
+              Welcome back to Housify
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaSpinner, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
 import axiosInstance from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 
 const AgentDashboardAccess = () => {
   const [loading, setLoading] = useState(true);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [agentData, setAgentData] = useState(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     checkApplicationStatus();
-  }, []);
+  }, [user, navigate]);
 
   const checkApplicationStatus = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get('/api/agent/application-status');
+      const response = await axiosInstance.get('/api/agents/application-status');
       setApplicationStatus(response.data.status);
       setAgentData(response.data.agent);
     } catch (error) {

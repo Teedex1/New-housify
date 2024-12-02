@@ -2,8 +2,8 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const PrivateRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+const PrivateRoute = ({ children, requiredRole = 'user' }) => {
+  const { isAuthenticated, isLoading, userType } = useAuth();
 
   // Show loading spinner while checking authentication
   if (isLoading) {
@@ -14,12 +14,24 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  // Redirect to sign in if not authenticated
+  // Handle different role-based redirects
   if (!isAuthenticated) {
-    return <Navigate to="/agent/signin" replace />;
+    if (requiredRole === 'admin') {
+      return <Navigate to="/admin/login" replace />;
+    }
+    return <Navigate to="/login" replace />;
   }
 
-  // Render protected content if authenticated
+  // Check if user has the required role
+  if (requiredRole === 'admin' && userType !== 'admin') {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  if (requiredRole === 'agent' && userType !== 'agent') {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Render protected content if authenticated with correct role
   return children;
 };
 

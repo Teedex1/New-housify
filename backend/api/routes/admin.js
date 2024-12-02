@@ -4,6 +4,7 @@ const Admin = require('../models/Admin');
 const Agent = require('../models/Agent');
 const { auth, isAdmin } = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const fs = require('fs');
 
 // @route   POST /api/admin/login
 // @desc    Admin login
@@ -12,47 +13,29 @@ router.post('/login', [
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists()
 ], async (req, res) => {
-    // Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ 
-            success: false,
-            message: 'Validation failed',
-            errors: errors.array() 
-        });
+        return res.status(400).json({ errors: errors.array() });
     }
 
     const { email, password } = req.body;
-    console.log('[Admin Login] Login attempt for:', email);
 
     try {
         // Find admin by email
         const admin = await Admin.findOne({ email }).select('+password');
         if (!admin) {
-            console.log('[Admin Login] No admin found for email:', email);
-            return res.status(401).json({ 
-                success: false,
-                message: 'Invalid credentials' 
-            });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         // Check if admin is active
         if (!admin.isActive) {
-            console.log('[Admin Login] Admin account is deactivated:', email);
-            return res.status(401).json({ 
-                success: false,
-                message: 'Account is deactivated' 
-            });
+            return res.status(401).json({ message: 'Account is deactivated' });
         }
 
         // Verify password
         const isMatch = await admin.comparePassword(password);
         if (!isMatch) {
-            console.log('[Admin Login] Invalid password for admin:', email);
-            return res.status(401).json({ 
-                success: false,
-                message: 'Invalid credentials' 
-            });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         // Generate token
@@ -62,7 +45,6 @@ router.post('/login', [
         admin.lastLogin = new Date();
         await admin.save();
 
-        // Send response
         res.json({
             success: true,
             token,
@@ -75,15 +57,9 @@ router.post('/login', [
                 lastLogin: admin.lastLogin
             }
         });
-
-        console.log('[Admin Login] Login successful for:', email);
     } catch (error) {
-        console.error('[Admin Login] Server error:', error);
-        res.status(500).json({ 
-            success: false,
-            message: 'Server error during login',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
+        console.error('Admin login error:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
@@ -314,6 +290,62 @@ router.put('/agents/:id/status', [auth, isAdmin], async (req, res) => {
         res.status(500).json({ 
             success: false,
             message: 'Server error',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
+// @route   DELETE /api/admin/manage/agents/:id
+// @desc    Delete an agent
+// @access  Private/Admin
+router.delete('/manage/agents/:id', [auth, isAdmin], async (req, res) => {
+    try {
+        console.log('[Delete Agent] Attempting to delete agent:', req.params.id);
+        
+        const agent = await Agent.findById(req.params.id);
+        if (!agent) {
+            console.log('[Delete Agent] Agent not found:', req.params.id);
+            return res.status(404).json({
+                success: false,
+                message: 'Agent not found'
+            });
+        }
+
+        // Delete associated files if they exist
+        if (agent.profilePhoto) {
+            try {
+                fs.unlinkSync(agent.profilePhoto);
+            } catch (err) {
+                console.error('[Delete Agent] Error deleting profile photo:', err);
+            }
+        }
+        if (agent.idDocument) {
+            try {
+                fs.unlinkSync(agent.idDocument);
+            } catch (err) {
+                console.error('[Delete Agent] Error deleting ID document:', err);
+            }
+        }
+        if (agent.licenseDocument) {
+            try {
+                fs.unlinkSync(agent.licenseDocument);
+            } catch (err) {
+                console.error('[Delete Agent] Error deleting license document:', err);
+            }
+        }
+
+        await agent.deleteOne();
+        console.log('[Delete Agent] Agent deleted successfully:', req.params.id);
+
+        res.json({
+            success: true,
+            message: 'Agent deleted successfully'
+        });
+    } catch (error) {
+        console.error('[Delete Agent] Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete agent',
             error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }

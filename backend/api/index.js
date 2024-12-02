@@ -17,8 +17,8 @@ const adminRoute = require("./routes/admin");
 // Import middleware
 const { errorHandler, notFound } = require("./middleware/error");
 
-// Load env vars
-dotenv.config();
+// Load env vars from root directory
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const app = express();
 const port = process.env.PORT || 5001;

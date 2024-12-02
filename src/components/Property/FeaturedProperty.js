@@ -22,7 +22,7 @@ const FeaturedProperty = ({ items, text, header, showFilters = false }) => {
     if (filters.type !== "All Types" && item.type !== filters.type) return false;
     
     if (filters.priceRange !== "All Prices") {
-      const price = parseInt(item.price.replace(/[^0-9]/g, ""));
+      const price = typeof item.price === 'number' ? item.price : parseInt(item.price.replace(/[^0-9]/g, ""));
       switch (filters.priceRange) {
         case "Under ₦100M":
           if (price >= 100000000) return false;
@@ -137,7 +137,7 @@ const FeaturedProperty = ({ items, text, header, showFilters = false }) => {
         {/* Load More Button */}
         <div className="mt-16 text-center">
           <button
-            onClick={() => navigate('/property')}
+            onClick={() => navigate('/properties')}
             className="inline-flex items-center px-8 py-3 bg-purple-700 text-white font-semibold rounded-full hover:bg-pink-700 transition-colors duration-300 transform hover:scale-105"
           >
             Load More Properties

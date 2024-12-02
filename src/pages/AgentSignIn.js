@@ -25,14 +25,17 @@ const AgentSignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted:', { email: formData.email, isSignIn });
     
     try {
       if (isSignIn) {
         // Handle Sign In
-        const response = await axiosInstance.post('/api/agent/signin', {
+        console.log('Attempting signin...');
+        const response = await axiosInstance.post('/api/agents/signin', {
           email: formData.email,
           password: formData.password,
         });
+        console.log('Signin response:', response.data);
         
         localStorage.setItem('token', response.data.token);
         toast.success('Successfully signed in!');
@@ -44,7 +47,7 @@ const AgentSignIn = () => {
           return;
         }
 
-        await axiosInstance.post('/api/agent/signup', {
+        await axiosInstance.post('/api/agents/signup', {
           email: formData.email,
           password: formData.password,
           fullName: formData.fullName,
@@ -55,6 +58,7 @@ const AgentSignIn = () => {
         navigate('/agent/profile-setup');
       }
     } catch (error) {
+      console.error('Error during form submission:', error);
       toast.error(error.response?.data?.message || 'An error occurred');
     }
   };

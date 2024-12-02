@@ -25,7 +25,7 @@ function Header() {
             <NavLink to="/" className={({ isActive }) => (isActive ? "text-purple-500 block p-3 text-lg navlink" : "block p-3 text-lg navlink")}>
               Home
             </NavLink>
-            <NavLink to="/property" className={({ isActive }) => (isActive ? "text-purple-500 block p-3 text-lg navlink" : "block p-3 text-lg navlink")}>
+            <NavLink to="/properties" className={({ isActive }) => (isActive ? "text-purple-500 block p-3 text-lg navlink" : "block p-3 text-lg navlink")}>
               Properties
             </NavLink>
             <NavLink to="/agents" className={({ isActive }) => (isActive ? "text-purple-500 block p-3 text-lg navlink" : "block p-3 text-lg navlink")}>
@@ -49,10 +49,10 @@ function Header() {
             Login
           </NavLink>
           <NavLink
-            to="/agent/signin"
+            to="/agent/register"
             className="px-6 py-2 border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white rounded-lg transition-colors"
           >
-            For Agents
+            Become an Agent
           </NavLink>
         </div>
 
@@ -80,7 +80,7 @@ function Header() {
                 Home
               </NavLink>
               <NavLink
-                to="/property"
+                to="/properties"
                 className={({ isActive }) =>
                   isActive ? "text-purple-500 p-3 text-lg" : "text-white p-3 text-lg"
                 }
@@ -125,11 +125,11 @@ function Header() {
                   Login
                 </NavLink>
                 <NavLink
-                  to="/agent/signin"
+                  to="/agent/register"
                   className="px-6 py-2 border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white rounded-lg transition-colors"
                   onClick={() => setNav(false)}
                 >
-                  For Agents
+                  Become an Agent
                 </NavLink>
               </div>
             </nav>

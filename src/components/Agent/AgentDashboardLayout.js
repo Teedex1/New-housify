@@ -3,14 +3,16 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { FaHome, FaListAlt, FaUser, FaChartLine, FaEnvelope, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+import { useAuth } from '../../context/AuthContext';
 
 const AgentDashboardLayout = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/agent/signin');
+    logout();
+    navigate('/login');
   };
 
   const navItems = [

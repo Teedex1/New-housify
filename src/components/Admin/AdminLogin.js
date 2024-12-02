@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axios';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminLogin = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const AdminLogin = () => {
     });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const auth = useAuth();
 
     const handleChange = (e) => {
         setFormData({
@@ -23,35 +25,30 @@ const AdminLogin = () => {
         setLoading(true);
 
         try {
-            console.log('Attempting login with:', formData.email);
             const response = await axiosInstance.post('/api/admin/login', formData);
-            console.log('Login response:', response.data);
             
             if (response.data.success && response.data.token) {
+                // Store token and data in localStorage
                 localStorage.setItem('adminToken', response.data.token);
-                if (response.data.admin) {
-                    localStorage.setItem('adminData', JSON.stringify(response.data.admin));
-                }
+                localStorage.setItem('adminData', JSON.stringify(response.data.admin));
+                
+                // Set axios default header
+                axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+                
+                // Update auth context
+                auth.login(response.data.token, response.data.admin, 'admin');
+                
+                // Show success message
                 toast.success('Login successful!');
-                navigate('/admin/dashboard');
-            } else {
-                console.error('Invalid response structure:', response.data);
-                toast.error('Server response format error');
+                
+                // Navigate to dashboard
+                setTimeout(() => {
+                    navigate('/admin/dashboard', { replace: true });
+                }, 100);
             }
         } catch (error) {
             console.error('Login error:', error);
-            console.error('Error response:', error.response?.data);
-            
-            let errorMessage = 'Login failed. Please check your credentials.';
-            if (error.response?.data?.message) {
-                errorMessage = error.response.data.message;
-            }
-            
-            toast.error(errorMessage);
-            
-            // Clear any existing invalid tokens
-            localStorage.removeItem('adminToken');
-            localStorage.removeItem('adminData');
+            toast.error(error.response?.data?.message || 'Login failed');
         } finally {
             setLoading(false);
         }
