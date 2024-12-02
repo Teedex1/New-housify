@@ -1,109 +1,113 @@
-# Getting Started with Create React App
+# 🏠 Housify
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern real estate platform connecting property agents with potential buyers and renters. Built with React, Node.js, and MongoDB.
 
-## Available Scripts
+## ✨ Features
 
-In the project directory, you can run:
+- 🏘️ Property Listings: Browse, search, and filter available properties
+- 👤 User Authentication: Secure signup and login for users and agents
+- 💼 Agent Dashboard: Dedicated portal for real estate agents to manage listings
+- 📝 Property Management: Add, edit, and remove property listings
+- 📱 Responsive Design: Optimized for both desktop and mobile devices
 
-### `npm start`
+## 🛠️ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend:**
+  - React.js
+  - Tailwind CSS
+  - Axios for API calls
+  - Context API for state management
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Backend:**
+  - Node.js
+  - Express.js
+  - MongoDB with Mongoose
+  - JWT for authentication
 
-### `npm test`
+## 🚀 Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- Node.js (v14 or higher)
+- MongoDB Atlas account
+- npm or yarn
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Environment Setup
-
-1. Copy `.env.example` to `.env`:
+1. Clone the repository:
    ```bash
+   git clone https://github.com/yourusername/housify.git
+   cd housify
+   ```
+
+2. Install dependencies for both frontend and backend:
+   ```bash
+   # Install frontend dependencies
+   npm install
+
+   # Install backend dependencies
+   cd backend
+   npm install
+   ```
+
+3. Environment Setup:
+   ```bash
+   # Copy the example env file
    cp .env.example .env
    ```
 
-2. Update the `.env` file with your values:
+4. Update the `.env` file with your values:
    - `MONGO_URL`: Your MongoDB connection string
    - `JWT_SECRET`: A secure random string for JWT token signing
-   - `ADMIN_PASSWORD`: A secure password for the default admin account
+   - `ADMIN_PASSWORD`: Password for admin access
+   - Other configuration variables as needed
 
-⚠️ IMPORTANT: Never commit the `.env` file or any files containing sensitive information like:
-- Database credentials
-- API keys
-- Secret keys
-- Passwords
+5. Start the development servers:
+   ```bash
+   # Start backend server (from backend directory)
+   npm start
 
-## Security Best Practices
+   # Start frontend server (from root directory)
+   npm start
+   ```
 
-1. Environment Variables:
-   - Always use environment variables for sensitive information
-   - Keep `.env` file in `.gitignore`
-   - Provide `.env.example` with dummy values
+## 📁 Project Structure
 
-2. Database:
-   - Use strong passwords
-   - Restrict database access by IP
-   - Enable MongoDB Atlas security features
+```
+housify/
+├── frontend/          # React frontend application
+├── backend/           # Node.js backend API
+│   ├── api/          # API routes and controllers
+│   ├── models/       # MongoDB models
+│   └── middleware/   # Custom middleware
+├── public/           # Static files
+└── src/              # React source files
+    ├── components/   # Reusable React components
+    ├── pages/        # Page components
+    ├── context/      # React Context providers
+    └── utils/        # Utility functions
+```
 
-3. Authentication:
-   - Use secure password hashing (bcrypt)
-   - Implement rate limiting
-   - Use secure session management
+## 🔒 Security Best Practices
 
-## Learn More
+- Environment variables for sensitive information
+- Secure password hashing with bcrypt
+- JWT for authenticated requests
+- Rate limiting on API endpoints
+- Input validation and sanitization
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🤝 Contributing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Code Splitting
+## 📝 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Analyzing the Bundle Size
+## 👤 Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Tunde Ridwan Ogunmodede
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-
-Author
-Tunde Ridwan Ogunmodede 
+⭐️ If you find this project helpful, please give it a star!
