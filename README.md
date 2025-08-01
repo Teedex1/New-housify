@@ -36,7 +36,7 @@ A modern real estate platform connecting property agents with potential buyers a
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/housify.git
+   git clone https://github.com/Teedex1/New-housify.git
    cd housify
    ```
 
